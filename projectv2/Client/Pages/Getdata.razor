@@ -1,0 +1,45 @@
+﻿@page "/getdata"
+@using projectv2.Shared.Models;
+@inject HttpClient Http;
+@layout Custom
+
+<h1>Get Data</h1>
+
+<p>This component demonstrates fetching data from the Database.</p>
+<button @onclick="Getlogin">Accounts Data</button> <br />
+
+@if (a == null)
+{
+    <p><em>Noting</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in a)
+            {
+                <tr>
+                    <td>@log.Email</td>
+                    <td>@log.Password</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    login[]? a;
+    string s = "";
+    async void Getlogin()
+    {
+        a = await Http.GetFromJsonAsync<login[]>("/login");
+        s = "Success";
+        StateHasChanged();
+    }
+}

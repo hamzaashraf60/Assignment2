@@ -1,0 +1,42 @@
+﻿@page "/"
+@using projectv2.Shared.Models;
+@inject HttpClient Http;
+@layout Custom
+
+<body>
+    <h1>@s</h1>
+    <div class="body-con">
+        <div id="login-con">
+            <div id="card-logo">
+                <img src="Images/logo.png" alt="">
+            </div>
+            <div id="card-body">
+                <EditForm Model="form" OnValidSubmit="@HandleValidSubmit" class="f-set" style="border: none;">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="field">
+                        <InputText @bind-Value="form.Email" placeholder="Email" />
+                    </div>
+                    <div class="field">
+                        <InputText type="password" @bind-Value="form.Password" placeholder="Password" />
+                    </div>
+                    <input type="checkbox" name="checkbox" id="check-me"> Remember Me
+                    <div id="f-btn" class="field"><button>Login</button></div>
+                </EditForm>
+            </div>
+            <p id="cr-acc"><a href="#">Create Account</a></p>
+        </div>
+    </div>
+</body>
+
+
+@code {
+    login form = new login();
+    string s = "";
+    async void HandleValidSubmit()
+    {
+        await Http.PostAsJsonAsync<login>("/login", form);
+        s = "Saved";
+        StateHasChanged();
+    }
+}
